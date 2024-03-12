@@ -1,0 +1,27 @@
+main {
+  & > :first-child {
+    margin-right: 22rem;
+  }
+  & > :last-child {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    width: 20rem;
+  }
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.product-grid form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border: 1px solid #e5e7eb;
+  padding: 1rem;
+  border-radius: 8px;
+}
