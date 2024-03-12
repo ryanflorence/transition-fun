@@ -13,8 +13,7 @@ export function useTarget<T>(getPromise: () => Promise<T>, id: string) {
   const [, forceUpdate] = React.useState({});
   const value = React.use(ref.current);
   const deferredValue = React.useDeferredValue(value);
-  const [isPending, startTransition] = React.useTransition();
-  console.log("isPending useTarget", isPending);
+  const [, startTransition] = React.useTransition();
 
   React.useEffect(() => {
     const listener = (e: Event) => {
@@ -25,8 +24,8 @@ export function useTarget<T>(getPromise: () => Promise<T>, id: string) {
         (Array.isArray(detail) && detail.includes(id))
       ) {
         ref.current = null;
-        startTransition(async () => {
-          console.log("revalidate startTransition");
+
+        startTransition(() => {
           forceUpdate({});
         });
       }
@@ -109,8 +108,7 @@ export function useAction<T extends FormAction>(action: T, targets?: string[]) {
   const [result, setResult] = React.useState<unknown>(null);
 
   // run all of our updates in React's transition
-  const [isPending, startTransition] = React.useTransition();
-  console.log("isPending", isPending);
+  const [, startTransition] = React.useTransition();
 
   const actionWrapper: FormAction = async f => {
     if (controllerRef.current) controllerRef.current.abort();
@@ -129,7 +127,6 @@ export function useAction<T extends FormAction>(action: T, targets?: string[]) {
 
     setEarlyResult(null);
     startTransition(async () => {
-      console.log("actionWrapper startTransition");
       // track globally so useActionStates can read it
       addInflight(action, f);
       setFormData(f);
